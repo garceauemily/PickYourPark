@@ -3,33 +3,35 @@
 import socket
 import struct
 import sqlite3
-import testConnection
+from testConnection import *
 
 #fucntons to update database
-def updateDatabase(InorOut, ID, DBConn):
+def updateDatabase(InorOut, ID):
+        db_conn = create_connection("../db.sqlite3")
         if(InorOut == 0):
-            remove_car(ID)
+            remove_car(ID,db_conn)
         elif(InorOut == 1):
-            add_car(ID)
+            add_car(ID,db_conn)
         else:
              print(InorOut + ": not a valid entrance or exit int")
 
-def remove_car(ID):
+def remove_car(ID,DB_Conn):
         if(ID == '11111111'):
             print("CUID not unpacked")
         else:
             print("sql call to remove car")
-        #sql call to remove correspodign ID from the database
+            #sql call to remove correspodign ID from the database
+            delete_RFID(DB_Conn,ID)
 
-
-def add_car(ID):
+def add_car(ID,DB_Conn):
         if(ID == '11111111'):
             print("CUID not unpacked")
         else:
             print("sql call to add car")
-        #sql call to add corresponding ID from Database
+            #sql call to add corresponding ID from Database
+            insert_RFID(DB_Conn,ID)
 
-db_conn = sqlite3.connect("db.sq")
+#db_conn = sqlite3.connect("db.sq")
 IoO = 2
 CUID = '11111111'
 
