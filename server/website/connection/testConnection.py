@@ -22,7 +22,7 @@ def select_all_tasks(conn):
     :return:
     """
     cur = conn.cursor()
-    cur.execute("SELECT * FROM chartjs_rfid")
+    cur.execute("SELECT * FROM dashboard_rfid")
 
     rows = cur.fetchall()
 
@@ -31,17 +31,15 @@ def select_all_tasks(conn):
 
 def insert_RFID(conn,RFID_str):
     cur = conn.cursor()
-    cur.execute("INSERT INTO chartjs_rfid (Lot,RFID) VALUES ('C02',?)",(RFID_str,))
+    cur.execute("INSERT INTO dashboard_rfid (Lot,RFID) VALUES ('C02',?)",(RFID_str,))
     conn.commit()
 
 def delete_RFID(conn,RFID_str):
     cur = conn.cursor()
-    cur.execute("DELETE FROM chartjs_rfid WHERE RFID=?",(RFID_str,))
+    cur.execute("DELETE FROM dashboard_rfid WHERE RFID=?",(RFID_str,))
     conn.commit()
 
-#conn = create_connection("db.sqlite3")
-# select_all_tasks(conn)
-# insert_RFID(conn)
-# select_all_tasks(conn)
-# #delete_RFID(conn)
-# select_all_tasks(conn)
+#conn = create_connection("../db.sqlite3")
+# select_all_tasks(conn,'')
+# insert_RFID(conn,'')
+# #delete_RFID(conn,'')
