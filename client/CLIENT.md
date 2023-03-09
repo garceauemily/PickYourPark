@@ -1,0 +1,1 @@
+This is the directory for the client files which will be loaded on the Raspberry Pi
