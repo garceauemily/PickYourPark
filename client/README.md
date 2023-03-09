@@ -1,6 +1,6 @@
-# Client Files - ECE 4960 - Clemson University - Team 14
+# Client Files
 
-## This is the directory for the client files which will be loaded on the Raspberry Pi
+## This is the directory containing the client files which will run on the Raspberry Pi
 
 ### client.py
 
@@ -11,4 +11,4 @@ the following file - https://github.com/realpython/materials/blob/master/python-
 ### rfid.py
 
 This program is a module that provides various functions for interacting with
-the Sparkfun m6e nano RFID reader.
+the Sparkfun m6e nano RFID reader
