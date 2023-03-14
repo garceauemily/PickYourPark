@@ -39,7 +39,7 @@ def delete_RFID(conn,RFID_str):
     cur.execute("DELETE FROM dashboard_rfid WHERE RFID=?",(RFID_str,))
     conn.commit()
 
-#conn = create_connection("../db.sqlite3")
+# conn = create_connection("../db.sqlite3")
 # select_all_tasks(conn)
 # insert_RFID(conn,'')
 # #delete_RFID(conn,'')
