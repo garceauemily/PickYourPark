@@ -40,6 +40,6 @@ def delete_RFID(conn,RFID_str):
     conn.commit()
 
 #conn = create_connection("../db.sqlite3")
-# select_all_tasks(conn,'')
+# select_all_tasks(conn)
 # insert_RFID(conn,'')
 # #delete_RFID(conn,'')
