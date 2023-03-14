@@ -4,10 +4,15 @@ import socket
 import struct
 import sqlite3
 from testConnection import *
+import os.path, os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+#print(BASE_DIR)
+db_path = os.path.join(BASE_DIR, "../db.sqlite3")
 
 #fucntons to update database
 def updateDatabase(InorOut, ID):
-        db_conn = create_connection("../db.sqlite3")
+        db_conn = create_connection(db_path)
         if(InorOut == 0):
             remove_car(ID,db_conn)
         elif(InorOut == 1):
@@ -19,19 +24,19 @@ def remove_car(ID,DB_Conn):
         if(ID == '11111111'):
             print("CUID not unpacked")
         else:
-            print("sql call to remove car")
-            #sql call to remove correspodign ID from the database
-            #delete_RFID(DB_Conn,ID)
+            #sql call to remove correspoding ID from the database
+            print("deleting")
+            delete_RFID(DB_Conn,ID)
 
 def add_car(ID,DB_Conn):
         if(ID == '11111111'):
             print("CUID not unpacked")
         else:
-            print("sql call to add car")
             #sql call to add corresponding ID from Database
-            #insert_RFID(DB_Conn,ID)
+            print("inserting")
+            insert_RFID(DB_Conn,ID)
 
-#db_conn = sqlite3.connect("db.sq")
+#db_conn = create_connection("../db.sqlite3")
 IoO = 2
 CUID = '11111111'
 
@@ -41,22 +46,18 @@ PORT = 5005  # Port to listen on (non-privileged ports are > 1023)
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     print("Socket created at %s:%d" % (HOST, PORT))
     s.bind((HOST, PORT))
-    s.listen()
+    s.listen(5)
     conn, addr = s.accept()
     with conn:
         print(f"Connected by {addr}")
         while True:
+            print("p")
             data = conn.recv(9)
-            if not data:
-                continue
-            else:
+            print("p1")
+            if data:
                 print(struct.unpack('?8s',data))
                 IoO = data[0]
                 CUID = data[1]
                 updateDatabase(IoO, CUID)
 
 #conn.sendall(data)
-
-
-
-
