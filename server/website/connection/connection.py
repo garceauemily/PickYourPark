@@ -24,16 +24,33 @@ def select_all_tasks(conn):
     """
     cur = conn.cursor()
     cur.execute("SELECT * FROM dashboard_rfid")
-
     rows = cur.fetchall()
-
     for row in rows:
         print(row)
 
-def insert_RFID(conn,RFID_str):
+def check_full(conn,Lot):
     cur = conn.cursor()
-    cur.execute("INSERT INTO dashboard_rfid (Lot,RFID) VALUES ('C02',?)",(RFID_str,))
+    #find number of spaces currently occupied in given lot
+    cur.execute("SELECT * FROM dashboard_rfid WHERE Lot=?",(Lot,))
+    num_spaces_occupied = len(cur.fetchall())
+    #find total number of spaces in given lot
+    cur.execute("SELECT * FROM dashboard_lotsize WHERE name=?",(Lot,))
+    num_avail_spaces_list = cur.fetchone()
+    num_avail_spaces = num_avail_spaces_list[2]
+    print("Total number of spaces in",Lot,"is",num_avail_spaces)
+    print("Number of occupied spaces in",Lot,"is",num_spaces_occupied)
+    #check if lot is full
+    if num_spaces_occupied >= num_avail_spaces:
+        print("Lot is full")
+        return 1
+    else:
+        return 0
+
+def insert_RFID(conn,Lot,RFID_str):
+    cur = conn.cursor()
+    cur.execute("INSERT INTO dashboard_rfid (Lot,RFID) VALUES (?,?)",(Lot,RFID_str,))
     conn.commit()
+    return check_full(conn,Lot)
 
 def delete_RFID(conn,RFID_str):
     cur = conn.cursor()
@@ -46,19 +63,19 @@ def delete_RFID(conn,RFID_str):
 # conn = create_connection("../db.sqlite3")
 # select_all_tasks(conn)
 # insert_RFID(conn,'')
-# #delete_RFID(conn,'')
+# delete_RFID(conn,'')
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 #print(BASE_DIR)
 db_path = os.path.join(BASE_DIR, "../db.sqlite3")
 
 #fucntons to update database
-def updateDatabase(InorOut, ID):
+def updateDatabase(InorOut, Lot, ID):
         db_conn = create_connection(db_path)
         if(InorOut == 0):
             remove_car(ID,db_conn)
         elif(InorOut == 1):
-            add_car(ID,db_conn)
+            add_car(Lot,ID,db_conn)
         else:
              print(InorOut + ": not a valid entrance or exit int")
 
@@ -70,10 +87,10 @@ def remove_car(ID,DB_Conn):
             print("deleting")
             delete_RFID(DB_Conn,ID)
 
-def add_car(ID,DB_Conn):
+def add_car(Lot,ID,DB_Conn):
         if(ID == '11111111'):
             print("CUID not unpacked")
         else:
             #sql call to add corresponding ID from Database
             print("inserting")
-            insert_RFID(DB_Conn,ID)
+            insert_RFID(DB_Conn,Lot,ID)
