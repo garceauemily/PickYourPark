@@ -36,7 +36,10 @@ def insert_RFID(conn,RFID_str):
 
 def delete_RFID(conn,RFID_str):
     cur = conn.cursor()
-    cur.execute("DELETE FROM dashboard_rfid WHERE RFID=?",(RFID_str,))
+    if RFID_str == '00000000':
+        cur.execute("DELETE FROM dashboard_rfid WHERE RFID=? LIMIT 1",(RFID_str,))
+    else:
+        cur.execute("DELETE FROM dashboard_rfid WHERE RFID=?",(RFID_str,))
     conn.commit()
 
 # conn = create_connection("../db.sqlite3")
