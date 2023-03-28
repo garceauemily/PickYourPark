@@ -1,0 +1,7 @@
+HOW TO CONNECT TO HOTSPOT
+
+1. Connect to mobile hotspot from computer 
+2. Find IP address of mobile hotspot (in network settings)
+3. Add hotspot IP address to ALLOWED_HOSTS in settings.py 
+4. $ python manage.py runserver <IP address>:8000
+5. Paste <IP address>:8000 in phone's url bar
