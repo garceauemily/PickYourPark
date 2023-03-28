@@ -51,9 +51,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     with conn:
         print(f"Connected by {addr}")
         while True:
-            print("p")
             data = conn.recv(9)
-            print("p1")
             if data:
                 print(struct.unpack('?8s',data))
                 IoO = data[0]
