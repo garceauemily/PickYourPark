@@ -24,7 +24,7 @@
 </center>
 <hr />
 <div class="row">
-	<div class="col-md-12">
+	<div class="col-12" style="position: relative; height: 75vh; width: 97vw">
 	<canvas id="myChartBar"></canvas>
 	</div>
 </div>
@@ -76,11 +76,17 @@
 		}]
 		},
 		options: {
+		responsive: true,
+		maintainAspectRatio: false,
+		animation: {
+			duration: 0
+		},
 		indexAxis: 'y',
 		scales: {
 			xAxes: [{
 			ticks: {
-				beginAtZero: true
+				beginAtZero: true,
+				fontSize: 25
 			},
 			gridlines: {
 				display: false
@@ -89,11 +95,17 @@
 			yAxes: [{
 				gridlines: {
 					display: false
+				},
+				ticks: {
+					fontSize: 25
 				}
 			}]
 		},
 		plugins: {
 			tooltip: {
+			},
+			legend: {
+				display: true
 			}
 		}
 		}
