@@ -17,10 +17,10 @@
 
 </head>
 
-<body class="container-fluid">
+<body class="container-fluid" style="background-color: #FCF5E2">
 <center class="row">
-	<h1><b>Pick Your Park</b></h1>
-	<h2>Parking Lot Utilization</h2>
+	<h1 style="font-size:500%;"><b>Pick Your Park</b></h1>
+	<h2 style="font-size:300%">Parking Lot Utilization</h2>
 </center>
 <hr />
 <div class="row">
@@ -45,7 +45,18 @@
 		console.log(error_data);
 	}
 	})
-
+	function titleSize() {
+		if(window.innerWidth >= 2*window.innerHeight) {
+			return window.innerHeight*.04;
+		}
+		return window.innerHeight*.03;
+	}
+	function bodySize() {
+		if(window.innerWidth >= 2*window.innerHeight) {
+			return window.innerHeight*.04;
+		}
+		return window.innerHeight*.025;
+	}h
 	function drawBarGraph(data, id) {
 	var labels = data.labels;
 	var chartLabel = data.chartLabel;
@@ -76,10 +87,14 @@
 		}]
 		},
 		options: {
+		tooltips: {
+			titleFontSize: titleSize(),
+			bodyFontSize: bodySize(),
+		},
 		responsive: true,
 		maintainAspectRatio: false,
 		animation: {
-			duration: 0
+			//duration: 0
 		},
 		indexAxis: 'y',
 		scales: {
@@ -101,13 +116,12 @@
 				}
 			}]
 		},
-		plugins: {
-			tooltip: {
-			},
-			legend: {
-				display: true
+		legend: {
+			display: true,
+			labels: {
+				fontSize: 35,
 			}
-		}
+		},
 		}
 	});
 	}
