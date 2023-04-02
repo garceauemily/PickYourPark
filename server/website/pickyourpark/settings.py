@@ -25,12 +25,13 @@ SECRET_KEY = 'django-insecure-by@wov*t%06(t1z++66s*xjoew6k4-!lqvy(5(14ms05sx1#c^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0','192.168.127.197','172.20.10.4','127.0.0.1']
+ALLOWED_HOSTS = ['0.0.0.0','192.168.127.197','172.20.10.4','127.0.0.1','localhost:8000','localhost']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'dashboard',
     'rest_framework',
     'django.contrib.admin',
@@ -56,7 +57,9 @@ ROOT_URLCONF = 'pickyourpark.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR.joinpath('dashboard/templates')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -70,7 +73,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'pickyourpark.wsgi.application'
-
+ASGI_APPLICATION = 'pickyourpark.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -118,6 +121,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    BASE_DIR.joinpath('dashboard/static')
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

@@ -1,117 +1,25 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
 <title>Pick Your Park</title>
 <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-
-<!-- jQuery library -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-<!-- Latest compiled JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
-
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 </head>
-
-<body class="container-fluid">
-<center class="row">
-	<h1><b>Pick Your Park</b></h1>
-	<h2>Parking Lot Utilization</h2>
-</center>
-<hr />
-<div class="row">
-	<div class="col-12" style="position: relative; height: 75vh; width: 97vw">
-	<canvas id="myChartBar"></canvas>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-10 mx-auto mt-5">
+				<h1 id="app">{{ text }}</h1>
+			</div>
+		</div>
 	</div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-
-<script>
-	var endpoint = '/api';
-
-	$.ajax({
-	method: "GET",
-	url: endpoint,
-	success: function(data) {
-		drawBarGraph(data, 'myChartBar');
-		console.log("drawing");
-	},
-	error: function(error_data) {
-		console.log(error_data);
-	}
-	})
-
-	function drawBarGraph(data, id) {
-	var labels = data.labels;
-	var chartLabel = data.chartLabel;
-	var chartdata = data.chartdata;
-	var ctx = document.getElementById(id).getContext('2d');
-	var myChart = new Chart(ctx, {
-		type: 'horizontalBar',
-		data: {
-		labels: labels,
-		datasets: [{
-			label: chartLabel,
-			data: chartdata,
-			backgroundColor: [
-			'rgba(245, 102, 0, 1)',
-			'rgba(245, 102, 0, 1)',
-			'rgba(245, 102, 0, 1)',
-			'rgba(245, 102, 0, 1)',
-			'rgba(245, 102, 0, 1)'
-			],
-			borderColor: [
-			'rgba(245, 102, 0, 1)',
-			'rgba(245, 102, 0, 1)',
-			'rgba(245, 102, 0, 1)',
-			'rgba(245, 102, 0, 1)',
-			'rgba(245, 102, 0, 1)'
-			],
-			borderWidth: 2
-		}]
-		},
-		options: {
-		responsive: true,
-		maintainAspectRatio: false,
-		animation: {
-			duration: 0
-		},
-		indexAxis: 'y',
-		scales: {
-			xAxes: [{
-			ticks: {
-				beginAtZero: true,
-				fontSize: 25
-			},
-			gridlines: {
-				display: false
-			}
-			}],
-			yAxes: [{
-				gridlines: {
-					display: false
-				},
-				ticks: {
-					fontSize: 25
-				}
-			}]
-		},
-		plugins: {
-			tooltip: {
-			},
-			legend: {
-				display: true
-			}
-		}
-		}
-	});
-	}
-</script>
+	<script src="{% static 'main.js' %}"></script>
 </body>
-
 </html>

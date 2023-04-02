@@ -48,3 +48,6 @@ class ChartData(APIView):
 					"chartdata":chartdata,
 			}
 		return Response(data)
+	
+def index(request):
+	return render(request, 'index.html', context={'text': 'Hello world'})
