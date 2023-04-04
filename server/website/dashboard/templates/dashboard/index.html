@@ -34,17 +34,21 @@
 <script>
 	var endpoint = '/api';
 
-	$.ajax({
-	method: "GET",
-	url: endpoint,
-	success: function(data) {
-		drawBarGraph(data, 'myChartBar');
-		console.log("drawing");
-	},
-	error: function(error_data) {
-		console.log(error_data);
+	var getData = function() {
+		$.ajax({
+		method: "GET",
+		url: endpoint,
+		success: function(data) {
+			drawBarGraph(data, 'myChartBar');
+			console.log("drawing");
+		},
+		error: function(error_data) {
+			console.log(error_data);
+		}
+		})
 	}
-	})
+	setInterval(getData,1000);
+
 	function titleSize() {
 		if(window.innerWidth >= 2*window.innerHeight) {
 			return window.innerHeight*.04;
@@ -94,7 +98,7 @@
 		responsive: true,
 		maintainAspectRatio: false,
 		animation: {
-			//duration: 0
+			duration: 0
 		},
 		indexAxis: 'y',
 		scales: {
