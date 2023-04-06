@@ -52,13 +52,14 @@ def insert_RFID(conn,Lot,RFID_str):
     conn.commit()
     return check_full(conn,Lot)
 
-def delete_RFID(conn,RFID_str):
+def delete_RFID(conn,Lot,RFID_str):
     cur = conn.cursor()
     if RFID_str == '00000000':
         cur.execute("DELETE FROM dashboard_rfid WHERE RFID=? LIMIT 1",(RFID_str,))
     else:
         cur.execute("DELETE FROM dashboard_rfid WHERE RFID=?",(RFID_str,))
     conn.commit()
+    return check_full(conn,Lot)
 
 # conn = create_connection("../db.sqlite3")
 # select_all_tasks(conn)
@@ -69,23 +70,25 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 #print(BASE_DIR)
 db_path = os.path.join(BASE_DIR, "../db.sqlite3")
 
-#fucntons to update database
+#functions to update database
 def updateDatabase(InorOut, Lot, ID):
+        full = 0
         db_conn = create_connection(db_path)
         if(InorOut == 0):
-            remove_car(ID,db_conn)
+            full = remove_car(Lot,ID,db_conn)
         elif(InorOut == 1):
-            add_car(Lot,ID,db_conn)
+            full = add_car(Lot,ID,db_conn)
         else:
              print(InorOut + ": not a valid entrance or exit int")
+        return full
 
-def remove_car(ID,DB_Conn):
+def remove_car(Lot,ID,DB_Conn):
         if(ID == '11111111'):
             print("CUID not unpacked")
         else:
             #sql call to remove correspoding ID from the database
             print("deleting")
-            delete_RFID(DB_Conn,ID)
+            delete_RFID(DB_Conn,Lot,ID)
 
 def add_car(Lot,ID,DB_Conn):
         if(ID == '11111111'):
