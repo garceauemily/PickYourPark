@@ -47,6 +47,7 @@
 		}
 		})
 	}
+	
 	setInterval(getData,1000);
 
 	function titleSize() {
@@ -69,28 +70,48 @@
 	var LegendClickHandler = function(e,legenditem) {
 	};
 	//var colors = ['rgba(245, 102, 0, 1)','rgba(245, 102, 0, 1)','rgba(245, 102, 0, 1)','rgba(245, 102, 0, 1)','rgba(245, 102, 0, 1)'];
-	var colors = ['#FF0D0D','#FF0D0D','#FF0D0D','#FF0D0D','#FF0D0D',]
+	var colors = ['#F56600','#F56600','#F56600','#F56600','#F56600'];
 	for(i=0;i<5;i++)
 	{
-		if(chartdata[i]>8)
+		if(chartdata[i]>9)
 		{
-			colors[i]='#69B34C';
+			colors[i]='#522d80';
+		}
+		else if(chartdata[i]>8)
+		{
+			colors[i]='#722981';
+		}
+		else if(chartdata[i]>7)
+		{
+			colors[i]='#8e217e';
 		}
 		else if(chartdata[i]>6)
 		{
-			colors[i]='#ACB334';
+			colors[i]='#a91777';
+		}
+		else if(chartdata[i]>5)
+		{
+			colors[i]='#c00d6d';
 		}
 		else if(chartdata[i]>4)
 		{
-			colors[i]='#FAB733';
+			colors[i]='#d41160';
+		}
+		else if(chartdata[i]>3)
+		{
+			colors[i]='#e32250';
 		}
 		else if(chartdata[i]>2)
 		{
-			colors[i]='#FF8E15'
+			colors[i]='#ee383e';
+		}
+		else if(chartdata[i]>1)
+		{
+			colors[i]='#f44f28';
 		}
 		else if(chartdata[i]>0)
 		{
-			colors[i]='#FF4E11'
+			colors[i]='#f56600';
 		}
 	}
 	var myChart = new Chart(ctx, {
