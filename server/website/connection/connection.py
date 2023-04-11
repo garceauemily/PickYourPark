@@ -83,17 +83,21 @@ def updateDatabase(InorOut, Lot, ID):
         return full
 
 def remove_car(Lot,ID,DB_Conn):
+        full = 0
         if(ID == '11111111'):
             print("CUID not unpacked")
         else:
             #sql call to remove correspoding ID from the database
             print("deleting")
-            delete_RFID(DB_Conn,Lot,ID)
+            full = delete_RFID(DB_Conn,Lot,ID)
+        return full
 
 def add_car(Lot,ID,DB_Conn):
+        full = 0
         if(ID == '11111111'):
             print("CUID not unpacked")
         else:
             #sql call to add corresponding ID from Database
             print("inserting")
-            insert_RFID(DB_Conn,Lot,ID)
+            full = insert_RFID(DB_Conn,Lot,ID)
+        return full
