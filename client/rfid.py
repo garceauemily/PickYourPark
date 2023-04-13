@@ -10,7 +10,7 @@ except ImportError:
 try:
 	reader = mercury.Reader("tmr:///dev/ttyUSB0", baudrate=115200)
 	reader.set_region("NA3")
-	reader.set_read_plan([1], "GEN2", bank=["user"], read_power=1900)
+	reader.set_read_plan([1], "GEN2", bank=["user"], read_power=2700)
 except:
 	if not TestMode:
 		print("!->Unable to connect to RFID reader. Operating in test mode")
@@ -24,9 +24,12 @@ def GetCUID():
 	if not TestMode:
 		ReturnIDs = []
 		FoundTags = reader.read()
-		for Tag in FoundTags:
-			print(Tag.user_mem_data)
-			ReturnIDs.append(Tag.user_mem_data)
-		return ReturnIDs
+		if FoundTags is not None:
+			for Tag in FoundTags:
+				print(Tag.user_mem_data)
+				ReturnIDs.append(Tag.user_mem_data)
+			return ReturnIDs
+		else:
+			return b'00000000'
 	else:
-		return b'08675309'
+		return b'00000000'

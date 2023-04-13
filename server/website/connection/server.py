@@ -1,29 +1,46 @@
-# echo-server.py
-
 import socket
+from _thread import *
 import struct
 from connection import *
 
+ServerSideSocket = socket.socket()
+host = "169.254.185.103"
+port = 5005
+ThreadCount = 0
 
-IoO = 2
-CUID = '11111111'
+try:
+    ServerSideSocket.bind((host, port))
+except socket.error as e:
+    print(str(e))
 
-HOST = "169.254.185.103"  # This is the IP of the admin PC. This needs to be set statically
-PORT = 5005  # Port to listen on (non-privileged ports are > 1023)
+print('Socket is listening..')
+ServerSideSocket.listen(5)
 
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    print("Socket created at %s:%d" % (HOST, PORT))
-    s.bind((HOST, PORT))
-    s.listen(5)
-    conn, addr = s.accept()
-    with conn:
-        print(f"Connected by {addr}")
-        while True:
-            data = conn.recv(9)
-            if data:
+def multi_threaded_client(conn):
+    conn.send(str.encode('Server is working:'))
+    while True:
+        data = conn.recv(0)
+        if data:
+                # full = 0
                 print(struct.unpack('?8s',data))
                 IoO = data[0]
                 CUID = data[1]
-                updateDatabase(IoO, CUID)
+                full = updateDatabase(IoO, CUID)
+                if full:
+                    conn.sendall(b"full")
+                else:
+                    print("here")
+                    conn.sendall(b"mpty")
+        if not data:
+            break
+    conn.close()
 
-#conn.sendall(data)
+try:
+	while True:
+		Client, address = ServerSideSocket.accept()
+		print('Connected to: ' + address[0] + ':' + str(address[1]))
+		start_new_thread(multi_threaded_client, (Client, ))
+		ThreadCount += 1
+		print('Thread Number: ' + str(ThreadCount))
+except KeyboardInterrupt:
+	ServerSideSocket.close()

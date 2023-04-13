@@ -6,7 +6,7 @@
 
 This program connects via socket to the server and will read RFID tag data
 from the reader, pack the data, and send it to the server. It is based on
-the following file - https://github.com/realpython/materials/blob/master/python-sockets-tutorial/echo-client.py
+the client code model from - https://www.positronx.io/create-socket-server-with-multiple-clients-in-python/
 
 ### rfid.py
 
