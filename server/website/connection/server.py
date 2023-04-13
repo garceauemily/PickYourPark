@@ -4,7 +4,7 @@ import struct
 from connection import *
 
 ServerSideSocket = socket.socket()
-host = "169.254.185.103"
+host = "192.168.187.123"
 port = 5005
 ThreadCount = 0
 

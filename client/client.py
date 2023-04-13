@@ -4,30 +4,28 @@ import socket
 import struct
 import rfid
 import threading as th
+from adc import ADC
+import time
 
 HOST = "192.168.187.123"  # The server's hostname or IP address
 PORT = 5005  # The port used by the server
 
 IoO = 1
 CUID = 12345678
+CarWeight = 32768 #65535/2
 
 #Interrupt routine
-push = 18
-fsr1 = 31
-fsr2 = 37
-led  = 16
+fsr1 = 6
+fsr2 = 26
+led  = 23
 press = 0
 run = 1
 
-try:
-    import RPi.GPIO as GPIO
-    GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(push, GPIO.IN)
-    GPIO.setup(fsr1, GPIO.IN)
-    GPIO.setup(fsr2, GPIO.IN)
-    GPIO.setup(led, GPIO.OUT)
-except:
-    pass
+import RPi.GPIO as GPIO
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(fsr1, GPIO.IN)
+GPIO.setup(fsr2, GPIO.IN)
+GPIO.setup(led, GPIO.OUT)
 
 lock1 = 1
 lock2 = 1
@@ -37,9 +35,15 @@ def FSR1():
     global press
     lock1 = 0
     print("FSR1 Tripped (Counting up)")
-    doSend(1)
     while GPIO.input(fsr1):
         temp = 1
+    print("Press 1")
+    while not GPIO.input(fsr1):
+        temp = 1
+    while GPIO.input(fsr1):
+        temp = 1
+    print("Press 2")
+    doSend(1)
     press = press + 1
     print("Count: ", press)
     lock1 = 1
@@ -49,9 +53,15 @@ def FSR2():
     global press
     lock2 = 0
     print("FSR2 Tripped (Counting down)")
-    doSend(0)
-    while GPIO.input(fsr2)
+    while GPIO.input(fsr2):
         temp = 1
+    print("Press 1")
+    while not GPIO.input(fsr2):
+        temp = 1
+    while GPIO.input(fsr2):
+        temp = 1
+    print("Press 2")
+    doSend(0)
     press = press - 1
     print("Count: ", press)
     lock2 = 1
@@ -73,9 +83,12 @@ def doSend(IoO):
                         toggleLED(1)
                 else:
                         toggleLED(0)
+
         except socket.error as e:
                 print(str(e))
+
         ClientMultiSocket.close()
+        print("Client closed")
 
 def toggleLED(full):
       if full == 1:
@@ -85,6 +98,9 @@ def toggleLED(full):
         print("LED off")
         GPIO.output(led, GPIO.LOW)
 
+#Setup ACD
+adc = ADC()
+
 try:
     while True:
         if GPIO.input(fsr1) and lock1:
@@ -93,5 +109,7 @@ try:
         if GPIO.input(fsr2) and lock2:
                 F2 = th.Thread(target=FSR2)
                 F2.start()
+        time.sleep(0.2)
+
 except KeyboardInterrupt:
     GPIO.cleanup()
