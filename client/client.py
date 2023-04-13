@@ -37,6 +37,10 @@ def FSR1():
     global press
     lock1 = 0
     print("FSR1 Tripped (Counting up)")
+    while GPIO.input(fsr1):
+        temp = 1
+    while GPIO.input(fsr1):
+        temp = 1
     doSend(1)
     while GPIO.input(fsr1):
         temp = 1
@@ -49,8 +53,12 @@ def FSR2():
     global press
     lock2 = 0
     print("FSR2 Tripped (Counting down)")
+    while GPIO.input(fsr2):
+        temp = 1
+    while GPIO.input(fsr2):
+        temp = 1
     doSend(0)
-    while GPIO.input(fsr2)
+    while GPIO.input(fsr2):
         temp = 1
     press = press - 1
     print("Count: ", press)
