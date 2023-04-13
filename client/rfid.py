@@ -30,6 +30,6 @@ def GetCUID():
 				ReturnIDs.append(Tag.user_mem_data)
 			return ReturnIDs
 		else:
-			return b'00000000'
+			return b"00000000"
 	else:
-		return b'00000000'
+		return b"00000000"
