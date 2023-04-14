@@ -34,10 +34,10 @@ def GetCUID():
 				break
 			FoundTags = reader.read()
 			for Tag in FoundTags:
-				if Tag.user_mem_data not in ReturnIDs:
-					ReturnIDs.append(Tag.user_mem_data)
+				if Tag.epc not in ReturnIDs and Tag.epc is not None:
+					ReturnIDs.append(Tag.epc)
 		if ReturnIDs == []:
-			ReturnIDs.append(b"00000000")
+			ReturnIDs.append(b"000000000000000000000000")
 		return ReturnIDs
 	else:
-		return b"00000000"
+		return b"000000000000000000000000"

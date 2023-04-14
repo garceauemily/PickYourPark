@@ -13,6 +13,7 @@ PORT = 5005  # The port used by the server
 IoO = 1
 CUID = 12345678
 CarWeight = 32768 #65535/2
+Lot = b"C02"
 
 #Interrupt routine
 fsr1 = 6
@@ -73,10 +74,10 @@ def doSend(IoO):
         CUID = rfid.GetCUID()
         print(CUID)
         if CUID == []:
-            CUID = b"00000000"
+            CUID = b"000000000000000000000000"
         for Tag in CUID:
             if Tag is not None:
-                packet = struct.pack('?8s', IoO, Tag)
+                packet = struct.pack('?3s24s', IoO, Lot, Tag)
                 ClientMultiSocket = socket.socket()
                 try:
                         ClientMultiSocket.connect((HOST, PORT))
@@ -103,6 +104,7 @@ def toggleLED(full):
 #Setup ACD
 adc = ADC()
 
+print("Lot", Lot, "ready")
 try:
     while True:
         if GPIO.input(fsr1) and lock1:

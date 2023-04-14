@@ -5,13 +5,14 @@ from connection import *
 
 def multi_threaded_client(conn):
 	while True:
-		data = conn.recv(12)
+		data = conn.recv(28)
 		if data:
 				# full = 0
-				print(struct.unpack('?8s',data))
+				print(struct.unpack('?3s24s',data))
 				IoO = data[0]
-				CUID = data[1]
-				full = updateDatabase(IoO, "C02", CUID)
+				Lot = data[1]
+				CUID = data [2]
+				full = updateDatabase(IoO, Lot, CUID)
 				if full:
 					conn.send(b"full")
 				else:
