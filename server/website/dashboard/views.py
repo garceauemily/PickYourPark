@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from dashboard.models import LotSize
-from dashboard.models import RFID
+from dashboard.models import Space
 
 
 class HomeView(View):
@@ -41,7 +41,7 @@ class ChartData(APIView):
 		labels = [LotSize.name for LotSize in LotSize.objects.all()]
 		chartLabel = "Number of Available Spaces"
 		
-		chartdata = [(LotSize.num_spaces - RFID.objects.filter(Lot=LotSize.name).count()) for LotSize in LotSize.objects.all()]
+		chartdata = [(LotSize.num_spaces - Space.objects.filter(Lot=LotSize.name).count()) for LotSize in LotSize.objects.all()]
 		data ={
 					"labels":labels,
 					"chartLabel":chartLabel,
