@@ -23,7 +23,7 @@ def select_all_tasks(conn):
     :return:
     """
     cur = conn.cursor()
-    cur.execute("SELECT * FROM dashboard_rfid")
+    cur.execute("SELECT * FROM dashboard_space")
     rows = cur.fetchall()
     for row in rows:
         print(row)
@@ -31,7 +31,7 @@ def select_all_tasks(conn):
 def check_full(conn,Lot):
     cur = conn.cursor()
     #find number of spaces currently occupied in given lot
-    cur.execute("SELECT * FROM dashboard_rfid WHERE Lot=?",(Lot,))
+    cur.execute("SELECT * FROM dashboard_space WHERE Lot=?",(Lot,))
     num_spaces_occupied = len(cur.fetchall())
     #find total number of spaces in given lot
     cur.execute("SELECT * FROM dashboard_lotsize WHERE name=?",(Lot,))
@@ -46,18 +46,18 @@ def check_full(conn,Lot):
     else:
         return 0
 
-def insert_RFID(conn,Lot,RFID_str):
+def insert_RFID(conn,Lot,Username):
     cur = conn.cursor()
-    cur.execute("INSERT INTO dashboard_rfid (Lot,RFID) VALUES (?,?)",(Lot,RFID_str,))
+    cur.execute("INSERT INTO dashboard_space (Lot,Username) VALUES (?,?)",(Lot,Username,))
     conn.commit()
     return check_full(conn,Lot)
 
-def delete_RFID(conn,Lot,RFID_str):
+def delete_RFID(conn,Lot,Username):
     cur = conn.cursor()
-    if RFID_str == '00000000':
-        cur.execute("DELETE FROM dashboard_rfid WHERE RFID=? LIMIT 1",(RFID_str,))
+    if Username == "000000000000000000000000":
+        cur.execute("DELETE FROM dashboard_space WHERE rowid = (SELECT rowid FROM dashboard_space WHERE Username=? LIMIT 1)",(Username,))
     else:
-        cur.execute("DELETE FROM dashboard_rfid WHERE RFID=?",(RFID_str,))
+        cur.execute("DELETE FROM dashboard_space WHERE Username=?",(Username,))
     conn.commit()
     return check_full(conn,Lot)
 
@@ -71,33 +71,40 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 db_path = os.path.join(BASE_DIR, "../db.sqlite3")
 
 #functions to update database
-def updateDatabase(InorOut, Lot, ID):
+def updateDatabase(InorOut, Lot, RFID):
         full = 0
         db_conn = create_connection(db_path)
+        cur=db_conn.cursor()
+        if RFID != "000000000000000000000000":
+            cur.execute("SELECT * FROM dashboard_rfid WHERE RFID=?",(RFID,))
+            Username_list = cur.fetchone()
+            Username = Username_list[2]
+        else:
+             Username = "000000000000000000000000"
         if(InorOut == 0):
-            full = remove_car(Lot,ID,db_conn)
+            full = remove_car(Lot,Username,db_conn)
         elif(InorOut == 1):
-            full = add_car(Lot,ID,db_conn)
+            full = add_car(Lot,Username,db_conn)
         else:
              print(InorOut + ": not a valid entrance or exit int")
         return full
 
-def remove_car(Lot,ID,DB_Conn):
+def remove_car(Lot,Username,DB_Conn):
         full = 0
-        if(ID == '11111111'):
+        if(Username == '11111111'):
             print("CUID not unpacked")
         else:
             #sql call to remove correspoding ID from the database
             print("deleting")
-            full = delete_RFID(DB_Conn,Lot,ID)
+            full = delete_RFID(DB_Conn,Lot,Username)
         return full
 
-def add_car(Lot,ID,DB_Conn):
+def add_car(Lot,Username,DB_Conn):
         full = 0
-        if(ID == '11111111'):
+        if(Username == '11111111'):
             print("CUID not unpacked")
         else:
             #sql call to add corresponding ID from Database
             print("inserting")
-            full = insert_RFID(DB_Conn,Lot,ID)
+            full = insert_RFID(DB_Conn,Lot,Username)
         return full
