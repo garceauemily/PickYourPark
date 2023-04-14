@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 TestMode = 0
+import time
+ReturnIDs = []
 
 try:
 	import mercury
@@ -22,14 +24,20 @@ def PrintModel():
 
 def GetCUID():
 	if not TestMode:
+		global ReturnIDs
 		ReturnIDs = []
-		FoundTags = reader.read()
-		if FoundTags is not None:
+		start_time = time.time()
+		while True:
+			current_time = time.time()
+			elapsed_time = current_time - start_time
+			if elapsed_time > 2:
+				break
+			FoundTags = reader.read()
 			for Tag in FoundTags:
-				print(Tag.user_mem_data)
-				ReturnIDs.append(Tag.user_mem_data)
-			return ReturnIDs
-		else:
-			return b"00000000"
+				if Tag.user_mem_data not in ReturnIDs:
+					ReturnIDs.append(Tag.user_mem_data)
+		if ReturnIDs == []:
+			ReturnIDs.append(b"00000000")
+		return ReturnIDs
 	else:
 		return b"00000000"
