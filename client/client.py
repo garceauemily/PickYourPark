@@ -71,24 +71,26 @@ def STOP():
 
 def doSend(IoO):
         CUID = rfid.GetCUID()
-        packet = struct.pack('?8s', IoO, CUID)
-
-        ClientMultiSocket = socket.socket()
-        try:
-                ClientMultiSocket.connect((HOST, PORT))
-                ClientMultiSocket.send(packet)
-                data = ClientMultiSocket.recv(4)
-
-                if data == b"full":
-                        toggleLED(1)
-                else:
-                        toggleLED(0)
-
-        except socket.error as e:
-                print(str(e))
-
-        ClientMultiSocket.close()
-        print("Client closed")
+        print(CUID)
+        if CUID == []:
+            CUID = b"00000000"
+        for Tag in CUID:
+            if Tag is not None:
+                packet = struct.pack('?8s', IoO, Tag)
+                ClientMultiSocket = socket.socket()
+                try:
+                        ClientMultiSocket.connect((HOST, PORT))
+                        ClientMultiSocket.send(packet)
+                        data = ClientMultiSocket.recv(4)
+                        print(data)
+                        if data == b"full":
+                                toggleLED(1)
+                        else:
+                                toggleLED(0)
+                except socket.error as e:
+                        print(str(e))
+                ClientMultiSocket.close()
+                print("Client closed")
 
 def toggleLED(full):
       if full == 1:

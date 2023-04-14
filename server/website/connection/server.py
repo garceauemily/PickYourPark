@@ -17,20 +17,18 @@ print('Socket is listening..')
 ServerSideSocket.listen(5)
 
 def multi_threaded_client(conn):
-    conn.send(str.encode('Server is working:'))
     while True:
-        data = conn.recv(0)
+        data = conn.recv(12)
         if data:
                 # full = 0
                 print(struct.unpack('?8s',data))
                 IoO = data[0]
                 CUID = data[1]
-                full = updateDatabase(IoO, CUID)
+                full = updateDatabase(IoO, "C02", CUID)
                 if full:
-                    conn.sendall(b"full")
+                    conn.send(b"full")
                 else:
-                    print("here")
-                    conn.sendall(b"mpty")
+                    conn.send(b"mpty")
         if not data:
             break
     conn.close()
