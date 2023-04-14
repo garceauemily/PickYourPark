@@ -8,11 +8,12 @@ def multi_threaded_client(conn):
 		data = conn.recv(28)
 		if data:
 				# full = 0
-				print(struct.unpack('?3s24s',data))
-				IoO = data[0]
-				Lot = data[1]
-				CUID = data [2]
-				full = updateDatabase(IoO, Lot, CUID)
+				unpacked = struct.unpack('?3s24s',data)
+				IoO = unpacked[0]
+				Lot = unpacked[1]
+				CUID = unpacked [2]
+				print(IoO, Lot, CUID)
+				full = updateDatabase(IoO, Lot.decode('utf-8'), CUID.decode('utf-8'))
 				if full:
 					conn.send(b"full")
 				else:
