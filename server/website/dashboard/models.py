@@ -25,4 +25,4 @@ class LotSize(models.Model):
 class RFID(models.Model):
     RFID = models.CharField(max_length=200)
     CUID = models.CharField(max_length=9)
-    Username = models.CharField(max_length=20)
+    Username = models.CharField(max_length=20) 
