@@ -75,11 +75,11 @@ def updateDatabase(InorOut, Lot, RFID):
         full = 0
         db_conn = create_connection(db_path)
         cur=db_conn.cursor()
-        print("HERE", RFID)
+        #print("HERE", RFID)
         if RFID != "000000000000000000000000":
             cur.execute("SELECT * FROM dashboard_rfid WHERE RFID=?",(RFID,))
             Username_list = cur.fetchone()
-            print("Here2", Username_list)
+            #print("Here2", Username_list)
             Username = Username_list[2]
         else:
              Username = "000000000000000000000000"
