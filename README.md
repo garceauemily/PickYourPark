@@ -3,6 +3,7 @@
 
 ![From left to right: Chandler, Jack, John, Emily, Greg, Mason](https://github.com/garceauemily/PickYourPark/blob/main/posternight.jpg)
 
+## Directory Overview
 ### client
 
 This directory contains the scripts and modules that are loaded on the Raspberry Pi. Everything is written in Python.
