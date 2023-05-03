@@ -22,20 +22,20 @@ def PrintModel():
 	print(reader.get_model())
 	print(reader.get_supported_regions())
 
+def AddEPC(epc):
+	global ReturnIDs
+	if epc not in ReturnIDs and epc is not None:
+		ReturnIDs.append(epc)
+	#ReturnIDs.append(epc)
+
 def GetCUID():
 	if not TestMode:
 		global ReturnIDs
 		ReturnIDs = []
-		start_time = time.time()
-		while True:
-			current_time = time.time()
-			elapsed_time = current_time - start_time
-			if elapsed_time > 2:
-				break
-			FoundTags = reader.read()
-			for Tag in FoundTags:
-				if Tag.epc not in ReturnIDs and Tag.epc is not None:
-					ReturnIDs.append(Tag.epc)
+		reader.start_reading(lambda tag: AddEPC(tag.epc))
+		time.sleep(3)
+		reader.stop_reading()
+
 		if ReturnIDs == []:
 			ReturnIDs.append(b"000000000000000000000000")
 		return ReturnIDs
