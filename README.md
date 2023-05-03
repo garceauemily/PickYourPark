@@ -1,5 +1,7 @@
-# Pick Your Park: A parking lot monitoring system
+# Pick Your Park: A Parking Lot Utilization Monitoring System
 #### Greg Andrews, Jack Bjelland, John Broughton, Emily Garceau, Chandler Todd, Mason Young
+
+![Photo of the mem](https://raw.githubusercontent.com/i-saumitra/Voice-controlled-MP3-Player/master/screenshot.jpg)
 
 ### client
 
